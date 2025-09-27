@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunder Antivirus - Tüm Kodlar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Courier New', monospace; 
+            background: #0a0a0a; 
+            color: #00ff00; 
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: #111; 
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        header { 
+            text-align: center; 
+            padding: 20px; 
+            border-bottom: 2px solid #00ff00;
+            margin-bottom: 30px;
+        }
+        h1 { 
+            color: #00ff00; 
+            font-size: 2.5em; 
+            text-shadow: 0 0 10px #00ff00;
+        }
+        h2 { 
+            color: #00ff00; 
+            margin: 20px 0 10px; 
+            padding: 10px;
+            background: #1a1a1a;
+            border-left: 4px solid #00ff00;
+        }
+        h3 { color: #00ff00; margin: 15px 0 10px; }
+        .file-tab { 
+            background: #1a1a1a; 
+            padding: 10px 15px; 
+            border: 1px solid #00ff00; 
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            display: inline-block;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .file-content { 
+            background: #000; 
+            padding: 15px; 
+            border: 1px solid #00ff00;
+            border-radius: 0 5px 5px 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        .code-block { 
+            background: #000; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-left: 3px solid #00ff00;
+            overflow-x: auto;
+        }
+        pre { white-space: pre-wrap; }
+        .keyword { color: #ff6b6b; }
+        .function { color: #4ecdc4; }
+        .string { color: #f7dc6f; }
+        .comment { color: #888; }
+        .number { color: #ae81ff; }
+        .file-structure { 
+            background: #1a1a1a; 
+            padding: 15px; 
+            margin: 15px 0;
+            border: 1px solid #00ff00;
+        }
+        .feature-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 10px; 
+            margin: 20px 0;
+        }
+        .feature-item { 
+            background: #1a1a1a; 
+            padding: 10px; 
+            border-left: 3px solid #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ THUNDER ANTIVIRUS</h1>
+            <p>Tüm Kodlar - Tek Dosyada</p>
+        </header>
+
+        <!-- AndroidManifest.xml -->
+        <h2>📄 AndroidManifest.xml</h2>
+        <div class="code-block">
+            <pre><code>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.thunder.antivirus"&gt;
+
+    &lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" /&gt;
+    &lt;uses-permission android:name="android.permission.FOREGROUND_SERVICE" /&gt;
+    &lt;uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /&gt;
+
+    &lt;application
+        android:name=".ThunderApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Thunder Antivirus"
+        android:theme="@style/Theme.ThunderAntivirus"&gt;
+        
+        &lt;activity
+            android:name=".MainActivity"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+
+        &lt;service android:name=".ScanService" /&gt;
+        &lt;service android:name=".RealTimeProtectionService" /&gt;
+
+        &lt;receiver android:name=".PackageInstallReceiver"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.PACKAGE_ADDED" /&gt;
+                &lt;data android:scheme="package" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+    &lt;/application&gt;
+&lt;/manifest&gt;
+            </code></pre>
+        </div>
+
+        <!-- build.gradle -->
+        <h2>📦 build.gradle (Module: app)</h2>
+        <div class="code-block">
+            <pre><code>
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.thunder.antivirus"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+}
+            </code></pre>
+        </div>
+
+        <!-- MainActivity.kt -->
+        <h2>🎯 MainActivity.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.thunder.antivirus.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class MainActivity : AppCompatActivity() {
+    
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var virusScanner: VirusScanner
+    private lateinit var realTimeProtection: RealTimeProtection
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        initializeApp()
+        setupClickListeners()
+        startRealTimeProtection()
+    }
+    
+    private fun initializeApp() {
+        virusScanner = VirusScanner(this)
+        realTimeProtection = RealTimeProtection(this)
+        
+        // İlk güvenlik kontrolü
+        lifecycleScope.launch {
+            val status = checkSecurityStatus()
+            updateSecurityUI(status)
+        }
+    }
+    
+    private suspend fun checkSecurityStatus(): SecurityStatus {
+        return withContext(Dispatchers.IO) {
+            SecurityStatus(
+                isProtected = realTimeProtection.isEnabled(),
+                lastScanDate = virusScanner.getLastScanDate(),
+                threatsFound = virusScanner.getThreatCount(),
+                systemSecurity = checkSystemSecurity()
+            )
+        }
+    }
+    
+    private fun setupClickListeners() {
+        binding.btnQuickScan.setOnClickListener {
+            startQuickScan()
+        }
+        
+        binding.btnDeepScan.setOnClickListener {
+            startDeepScan()
+        }
+        
+        binding.btnRealTimeProtection.setOnClickListener {
+            toggleRealTimeProtection()
+        }
+    }
+    
+    private fun startQuickScan() {
+        lifecycleScope.launch {
+            binding.progressBar.visibility = View.VISIBLE
+            val result = withContext(Dispatchers.IO) {
+                virusScanner.performQuickScan()
+            }
+            handleScanResult(result)
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+    
+    private fun handleScanResult(result: ScanResult) {
+        Toast.makeText(this, 
+            "${result.threatsFound} tehdit bulundu", 
+            Toast.LENGTH_LONG).show()
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- VirusScanner.kt -->
+        <h2>🔍 VirusScanner.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+
+class VirusScanner(private val context: Context) {
+    
+    private val malwareSignatures = mapOf(
+        "com.fake.app" to "FakeApp Trojan",
+        "com.suspicious.app" to "Suspicious Application",
+        "com.adware.app" to "Adware Application"
+    )
+    
+    private val suspiciousPermissions = listOf(
+        "android.permission.READ_SMS",
+        "android.permission.SEND_SMS",
+        "android.permission.ACCESS_FINE_LOCATION"
+    )
+    
+    fun performQuickScan(): ScanResult {
+        val installedApps = getInstalledApps()
+        val threats = mutableListOf<ThreatInfo>()
+        
+        installedApps.forEach { app ->
+            val threat = analyzeApplication(app)
+            threat?.let { threats.add(it) }
+        }
+        
+        return ScanResult(
+            scanType = "Quick Scan",
+            threatsFound = threats.size,
+            scannedItems = installedApps.size,
+            threats = threats
+        )
+    }
+    
+    fun performDeepScan(): ScanResult {
+        val threats = mutableListOf<ThreatInfo>()
+        
+        // Uygulama tarama
+        val installedApps = getInstalledApps()
+        installedApps.forEach { app ->
+            analyzeApplication(app)?.let { threats.add(it) }
+        }
+        
+        // Dosya sistemi tarama
+        threats.addAll(scanFileSystem())
+        
+        return ScanResult(
+            scanType = "Deep Scan",
+            threatsFound = threats.size,
+            scannedItems = installedApps.size + threats.size,
+            threats = threats
+        )
+    }
+    
+    private fun analyzeApplication(appInfo: ApplicationInfo): ThreatInfo? {
+        val packageName = appInfo.packageName
+        
+        // İmza kontrolü
+        malwareSignatures[packageName]?.let { threatName ->
+            return ThreatInfo(
+                name = threatName,
+                type = ThreatType.MALWARE,
+                packageName = packageName,
+                severity = ThreatSeverity.HIGH
+            )
+        }
+        
+        // İzin analizi
+        if (hasSuspiciousPermissions(packageName)) {
+            return ThreatInfo(
+                name = "Suspicious Permissions",
+                type = ThreatType.RISKWARE,
+                packageName = packageName,
+                severity = ThreatSeverity.MEDIUM
+            )
+        }
+        
+        return null
+    }
+    
+    private fun hasSuspiciousPermissions(packageName: String): Boolean {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(
+                packageName, PackageManager.GET_PERMISSIONS)
+            packageInfo.requestedPermissions?.any { permission ->
+                suspiciousPermissions.contains(permission)
+            } ?: false
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    private fun getInstalledApps(): List<ApplicationInfo> {
+        return context.packageManager.getInstalledApplications(0)
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- RealTimeProtection.kt -->
+        <h2>🛡️ RealTimeProtection.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.content.Context
+import android.content.pm.PackageManager
+import android.util.Log
+
+class RealTimeProtection(private val context: Context) {
+    
+    private var isEnabled = false
+    private val fileMonitor = FileSystemMonitor()
+    private val appInstallMonitor = AppInstallMonitor()
+    
+    fun enable() {
+        if (isEnabled) return
+        
+        startFileMonitoring()
+        startAppInstallMonitoring()
+        isEnabled = true
+        
+        Log.d("ThunderAV", "Real-time protection enabled")
+    }
+    
+    fun disable() {
+        fileMonitor.stopMonitoring()
+        appInstallMonitor.unregister()
+        isEnabled = false
+        
+        Log.d("ThunderAV", "Real-time protection disabled")
+    }
+    
+    fun isEnabled(): Boolean = isEnabled
+    
+    private fun startFileMonitoring() {
+        fileMonitor.start { filePath, event ->
+            when (event) {
+                FileEvent.CREATE -> onFileCreated(filePath)
+                FileEvent.MODIFY -> onFileModified(filePath)
+                FileEvent.DELETE -> onFileDeleted(filePath)
+            }
+        }
+    }
+    
+    private fun startAppInstallMonitoring() {
+        appInstallMonitor.register { packageName ->
+            onAppInstalled(packageName)
+        }
+    }
+    
+    private fun onFileCreated(filePath: String) {
+        if (isExecutableFile(filePath)) {
+            scanFileImmediately(filePath)
+        }
+    }
+    
+    private fun onAppInstalled(packageName: String) {
+        scanAppImmediately(packageName)
+    }
+    
+    private fun scanFileImmediately(filePath: String) {
+        // Dosyayı hemen tarama
+        val threat = analyzeFile(filePath)
+        threat?.let {
+            showThreatAlert(it)
+            quarantineFile(filePath)
+        }
+    }
+    
+    private fun scanAppImmediately(packageName: String) {
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            val threat = analyzeApplication(appInfo)
+            threat?.let {
+                showThreatAlert(it)
+                // Uygulamayı kaldırma öner
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e("ThunderAV", "App not found: $packageName")
+        }
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Data Models -->
+        <h2>📊 Data Models</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+data class ScanResult(
+    val scanType: String,
+    val threatsFound: Int,
+    val scannedItems: Int,
+    val threats: List<ThreatInfo>,
+    val timestamp: Long = System.currentTimeMillis()
+)
+
+data class ThreatInfo(
+    val name: String,
+    val type: ThreatType,
+    val packageName: String? = null,
+    val filePath: String? = null,
+    val description: String = "",
+    val severity: ThreatSeverity = ThreatSeverity.MEDIUM
+)
+
+enum class ThreatType {
+    MALWARE, RISKWARE, ADWARE, RANSOMWARE, SUSPICIOUS, EXPLOIT
+}
+
+enum class ThreatSeverity {
+    LOW, MEDIUM, HIGH, CRITICAL
+}
+
+data class SecurityStatus(
+    val isProtected: Boolean,
+    val lastScanDate: Long,
+    val threatsFound: Int,
+    val systemSecurity: SystemSecurity
+)
+
+data class SystemSecurity(
+    val isRooted: Boolean = false,
+    val unknownSources: Boolean = false,
+    val developerOptions: Boolean = false
+)
+            </code></pre>
+        </div>
+
+        <!-- Database Helper -->
+        <h2>💾 ThreatDatabaseHelper.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+class ThreatDatabaseHelper(context: Context) : 
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    
+    companion object {
+        const val DATABASE_NAME = "ThunderAntivirus.db"
+        const val DATABASE_VERSION = 1
+        const val TABLE_THREATS = "threats"
+        const val TABLE_SCAN_HISTORY = "scan_history"
+    }
+    
+    override fun onCreate(db: SQLiteDatabase) {
+        createThreatsTable(db)
+        createScanHistoryTable(db)
+        insertDefaultSignatures(db)
+    }
+    
+    private fun createThreatsTable(db: SQLiteDatabase) {
+        val sql = """
+            CREATE TABLE $TABLE_THREATS (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                signature TEXT UNIQUE,
+                threat_name TEXT,
+                threat_type TEXT,
+                severity INTEGER,
+                last_updated INTEGER
+            )
+        """.trimIndent()
+        db.execSQL(sql)
+    }
+    
+    private fun createScanHistoryTable(db: SQLiteDatabase) {
+        val sql = """
+            CREATE TABLE $TABLE_SCAN_HISTORY (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scan_type TEXT,
+                threats_found INTEGER,
+                scanned_items INTEGER,
+                timestamp INTEGER,
+                duration INTEGER
+            )
+        """.trimIndent()
+        db.execSQL(sql)
+    }
+    
+    fun addThreatSignature(signature: String, name: String, type: String, severity: Int) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("signature", signature)
+            put("threat_name", name)
+            put("threat_type", type)
+            put("severity", severity)
+            put("last_updated", System.currentTimeMillis())
+        }
+        db.insert(TABLE_THREATS, null, values)
+    }
+    
+    fun getThreatSignature(signature: String): ThreatSignature? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_THREATS,
+            null,
+            "signature = ?",
+            arrayOf(signature),
+            null, null, null
+        )
+        
+        return if (cursor.moveToFirst()) {
+            ThreatSignature(
+                signature = cursor.getString(cursor.getColumnIndexOrThrow("signature")),
+                name = cursor.getString(cursor.getColumnIndexOrThrow("threat_name")),
+                type = cursor.getString(cursor.getColumnIndexOrThrow("threat_type")),
+                severity = cursor.getInt(cursor.getColumnIndexOrThrow("severity"))
+            )
+        } else {
+            null
+        }.also { cursor.close() }
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Network Security -->
+        <h2>🌐 NetworkSecurity.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+
+class NetworkSecurity(private val context: Context) {
+    
+    private val maliciousIPs = listOf(
+        "192.168.1.100", "10.0.0.50", "172.16.0.25"
+    )
+    
+    private val suspiciousPorts = listOf(4444, 31337, 12345)
+    
+    fun scanNetwork(): NetworkScanResult {
+        val connections = getActiveConnections()
+        val suspicious = connections.filter { isSuspiciousConnection(it) }
+        
+        return NetworkScanResult(
+            totalConnections = connections.size,
+            suspiciousConnections = suspicious,
+            vpnEnabled = isVPNActive(),
+            proxyEnabled = isProxyActive()
+        )
+    }
+    
+    fun isVPNActive(): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) 
+            as ConnectivityManager
+        
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        
+        return capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ?: false
+    }
+    
+    private fun isSuspiciousConnection(connection: NetworkConnection): Boolean {
+        return maliciousIPs.contains(connection.remoteIP) ||
+               suspiciousPorts.contains(connection.remotePort)
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Quarantine Manager -->
+        <h2>🚫 QuarantineManager.kt</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.content.Context
+import java.io.File
+
+object QuarantineManager {
+    
+    private const val QUARANTINE_DIR = "ThunderAntivirus/Quarantine"
+    
+    fun quarantineFile(context: Context, filePath: String): Boolean {
+        return try {
+            val sourceFile = File(filePath)
+            if (!sourceFile.exists()) return false
+            
+            val quarantineDir = File(context.getExternalFilesDir(null), QUARANTINE_DIR)
+            if (!quarantineDir.exists()) {
+                quarantineDir.mkdirs()
+            }
+            
+            val quarantinedFile = File(quarantineDir, 
+                "${System.currentTimeMillis()}_${sourceFile.name}")
+            
+            sourceFile.copyTo(quarantinedFile)
+            sourceFile.delete()
+            
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+    
+    fun getQuarantinedFiles(context: Context): List<File> {
+        val quarantineDir = File(context.getExternalFilesDir(null), QUARANTINE_DIR)
+        return if (quarantineDir.exists()) {
+            quarantineDir.listFiles()?.toList() ?: emptyList()
+        } else {
+            emptyList()
+        }
+    }
+    
+    fun restoreFile(context: Context, quarantinedFile: File, originalPath: String): Boolean {
+        return try {
+            quarantinedFile.copyTo(File(originalPath), overwrite = true)
+            quarantinedFile.delete()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- Services -->
+        <h2>⚙️ Services</h2>
+        <div class="code-block">
+            <pre><code>
+package com.thunder.antivirus
+
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
+
+class ScanService : Service() {
+    
+    override fun onBind(intent: Intent): IBinder? = null
+    
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val scanType = intent?.getStringExtra("scan_type") ?: "quick"
+        
+        // Arkaplan taraması başlat
+        startBackgroundScan(scanType)
+        
+        return START_STICKY
+    }
+    
+    private fun startBackgroundScan(scanType: String) {
+        Thread {
+            val scanner = VirusScanner(this)
+            val result = when (scanType) {
+                "deep" -> scanner.performDeepScan()
+                else -> scanner.performQuickScan()
+            }
+            
+            // Sonuçları bildir
+            sendScanResultNotification(result)
+        }.start()
+    }
+}
+
+class RealTimeProtectionService : Service() {
+    private lateinit var realTimeProtection: RealTimeProtection
+    
+    override fun onCreate() {
+        super.onCreate()
+        realTimeProtection = RealTimeProtection(this)
+        realTimeProtection.enable()
+    }
+    
+    override fun onDestroy() {
+        realTimeProtection.disable()
+        super.onDestroy()
+    }
+}
+            </code></pre>
+        </div>
+
+        <!-- 16+ ÖZELLİK LİSTESİ -->
+        <h2>🚀 16+ ÖZELLİK LİSTESİ</h2>
+        <div class="feature-list">
+            <div class="feature-item">1. Hızlı Tarama</div>
+            <div class="feature-item">2. Derin Tarama</div>
+            <div class="feature-item">3. Gerçek Zamanlı Koruma</div>
+            <div class="feature-item">4. Ağ Güvenliği Tarama</div>
+            <div class="feature-item">5. Güvenlik Duvarı</div>
+            <div class="feature-item">6. Karantina Yönetimi</div>
+            <div class="feature-item">7. Otomatik Güncelleme</div>
+            <div class="feature-item">8. Güvenlik Raporlama</div>
+            <div class="feature-item">9. Uygulama İzni Analizi</div>
+            <div class="feature-item">10. Dosya Sistemi İzleme</div>
+            <div class="feature-item">11. Wi-Fi Güvenlik Tarama</div>
+            <div class="feature-item">12. Kötü URL Engelleme</div>
+            <div class="feature-item">13. Anti-Phishing Koruma</div>
+            <div class="feature-item">14. Bellek Optimizasyonu</div>
+            <div class="feature-item">15. Pil Tüketimi Analizi</div>
+            <div class="feature-item">16. Çocuk Koruması</div>
+            <div class="feature-item">17. Yedekleme ve Kurtarma</div>
+            <div class="feature-item">18. Gelişmiş Raporlama</div>
+        </div>
+
+        <!-- Proje Yapısı -->
+        <h2>📁 PROJE YAPISI</h2>
+        <div class="file-structure">
+            <pre>
+ThunderAntivirus/
+├── app/
+│   ├── src/main/java/com/thunder/antivirus/
+│   │   ├── MainActivity.kt
+│   │   ├── VirusScanner.kt
+│   │   ├── RealTimeProtection.kt
+│   │   ├── NetworkSecurity.kt
+│   │   ├── QuarantineManager.kt
+│   │   ├── ThreatDatabaseHelper.kt
+│   │   ├── ScanService.kt
+│   │   ├── RealTimeProtectionService.kt
+│   │   └── models/
+│   │       ├── ScanResult.kt
+│   │       ├── ThreatInfo.kt
+│   │       └── SecurityStatus.kt
+│   ├── res/
+│   │   ├── layout/
+│   │   ├── values/
+│   │   └── drawable/
+│   └── AndroidManifest.xml
+├── build.gradle
+└── proje ayarları
+            </pre>
+        </div>
+
+        <footer style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #00ff00;">
+            <p>Thunder Antivirus - Tüm hakları saklıdır © 2024</p>
+            <p>⚡ Güçlü Koruma, Hızlı Tarama ⚡</p>
+        </footer>
+    </div>
+
+    <script>
+        // Syntax highlighting için basit bir script
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('code');
+            codeBlocks.forEach(block => {
+                let html = block.innerHTML;
+                // Basit keyword highlighting
+                html = html.replace(/\b(fun|class|val|var|return|if|else|for|while)\b/g, 
+                    '<span class="keyword">$1</span>');
+                html = html.replace(/\b([a-zA-Z]+)\(/g, 
+                    '<span class="function">$1</span>(');
+                html = html.replace(/"([^"]*)"/g, 
+                    '<span class="string">"$1"</span>');
+                html = html.replace(/\b(\d+)\b/g, 
+                    '<span class="number">$1</span>');
+                html = html.replace(/\/\/.*$/gm, 
+                    '<span class="comment">$&</span>');
+                block.innerHTML = html;
+            });
+        });
+    </script>
+</body>
+  </html>
